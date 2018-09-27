@@ -30,6 +30,11 @@
             Name of the agent.
     
           example: filebeat
+        - name: hostname
+          type: keyword
+          description: >
+            The hostname as returned by the operating system on which the agent is running.
+          example: host-42.local
         - name: id
           type: keyword
           description: >
@@ -44,7 +49,11 @@
     
             This id normally changes across restarts, but `agent.id` does not.
           example: 8a4f500f
-    
+        - name: timezone
+          type: keyword
+          description: >
+            The timezone as returned by the operating system on which the agent is running.
+          example: host-42.local    
     - name: base
       title: Base
       group: 1
@@ -142,6 +151,12 @@
           example: t2.medium
           description: >
             Machine type of the host machine.
+            
+        - name: project_id
+          type: keyword
+          example: Project-X
+          description: >
+            Google Cloud project identifier            
     
         - name: account.id
           type: keyword
