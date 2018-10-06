@@ -47,7 +47,6 @@ ECS defines these fields.
  * [Geo fields](#geo)
  * [Host fields](#host)
  * [HTTP fields](#http)
- * [Kubernetes fields](#kubernetes)
  * [Log fields](#log)
  * [Network fields](#network)
  * [Organization fields](#organization)
@@ -55,7 +54,6 @@ ECS defines these fields.
  * [Process fields](#process)
  * [Service fields](#service)
  * [Source fields](#source)
- * [TLS fields](#tls)
  * [URL fields](#url)
  * [User fields](#user)
  * [User agent fields](#user_agent)
@@ -69,7 +67,7 @@ The base set contains all fields which are on the top level. These fields are co
 |---|---|---|---|---|
 | <a name="@timestamp"></a>@timestamp  | Date/time when the event originated.<br/>For log events this is the date/time when the event was generated, and not when it was read.<br/>Required field for all events.  | date  |   | `2016-05-23T08:05:34.853Z`  |
 | <a name="tags"></a>tags  | List of keywords used to tag each event.  | keyword  |   | `["production", "env2"]`  |
-| <a name="labels"></a>labels  | Key/value pairs.<br/>Can be used to add meta information to events. Should not contain nested objects. All values are stored as keyword.<br/>Example: `docker` and `k8s` labels.  | object  |   | `{'key2': 'value2', 'key1': 'value1'}`  |
+| <a name="labels"></a>labels  | Key/value pairs.<br/>Can be used to add meta information to events. Should not contain nested objects. All values are stored as keyword.<br/>Example: `docker` and `k8s` labels.  | object  |   | `{'application': 'foo-bar', 'env': 'production'}`  |
 | <a name="message"></a>message  | For log events the message field contains the log message.<br/>In other use cases the message field can be used to concatenate different values which are then freely searchable. If multiple messages exist, they can be combined into one message.  | text  |   | `Hello World`  |
 
 
@@ -151,7 +149,6 @@ Device fields are used to provide additional information about the device that i
 | <a name="device.vendor"></a>device.vendor  | Device vendor information.  | text  |   |   |
 | <a name="device.version"></a>device.version  | Device version.  | keyword  |   |   |
 | <a name="device.serial_number"></a>device.serial_number  | Device serial number.  | keyword  |   |   |
-| <a name="device.timezone.offset.sec"></a>device.timezone.offset.sec  | Timezone offset of the host in seconds.<br/>Number of seconds relative to UTC. If the offset is -01:30 the value will be -5400.  | long  |   | `-5400`  |
 | <a name="device.type"></a>device.type  | The type of the device the data is coming from.<br/>There is no predefined list of device types. Some examples are `endpoint`, `firewall`, `ids`, `ips`, `proxy`.  | keyword  |   | `firewall`  |
 
 
@@ -238,7 +235,6 @@ Normally the host information is related to the machine on which the event was g
 
 | Field  | Description  | Type  | Multi Field  | Example  |
 |---|---|---|---|---|
-| <a name="host.timezone.offset.sec"></a>host.timezone.offset.sec  | Timezone offset of the host in seconds.<br/>Number of seconds relative to UTC. If the offset is -01:30 the value will be -5400.  | long  |   | `-5400`  |
 | <a name="host.name"></a>host.name  | host.name is the hostname of the host.<br/>It can contain what `hostname` returns on Unix systems, the fully qualified domain name, or a name specified by the user. The sender decides which value to use.  | keyword  |   |   |
 | <a name="host.id"></a>host.id  | Unique host id.<br/>As hostname is not always unique, use values that are meaningful in your environment.<br/>Example: The current usage of `beat.name`.  | keyword  |   |   |
 | <a name="host.ip"></a>host.ip  | Host ip address.  | ip  |   |   |
@@ -264,20 +260,6 @@ Fields related to HTTP requests and responses.
 | <a name="http.version"></a>http.version  | Http version.  | keyword  |   | `1.1`  |
 
 
-## <a name="kubernetes"></a> Kubernetes fields
-
-Kubernetes fields are used for Kubernetes meta information. This information helps correlate data from Kubernetes setups.
-
-
-| Field  | Description  | Type  | Multi Field  | Example  |
-|---|---|---|---|---|
-| <a name="kubernetes.pod.name"></a>kubernetes.pod.name  | Kubernetes pod name  | keyword  |   |   |
-| <a name="kubernetes.namespace"></a>kubernetes.namespace  | Kubernetes namespace  | keyword  |   |   |
-| <a name="kubernetes.labels"></a>kubernetes.labels  | Kubernetes labels map  | object  |   |   |
-| <a name="kubernetes.annotations"></a>kubernetes.annotations  | Kubernetes annotations map  | object  |   |   |
-| <a name="kubernetes.container.name"></a>kubernetes.container.name  | Kubernetes container name. This name is unique within the pod only. It is different from the underlying `container.name` field.  | keyword  |   |   |
-
-
 ## <a name="log"></a> Log fields
 
 Fields which are specific to log events.
@@ -286,8 +268,6 @@ Fields which are specific to log events.
 | Field  | Description  | Type  | Multi Field  | Example  |
 |---|---|---|---|---|
 | <a name="log.level"></a>log.level  | Log level of the log event.<br/>Some examples are `WARN`, `ERR`, `INFO`.  | keyword  |   | `ERR`  |
-| <a name="log.line"></a>log.line  | Line number the log event was collected from.  | long  |   | `18`  |
-| <a name="log.offset"></a>log.offset  | Offset of the beginning of the log event.  | long  |   | `12`  |
 | <a name="log.original"></a>log.original  | This is the original log message and contains the full log message before splitting it up in multiple parts.<br/>In contrast to the `message` field which can contain an extracted part of the log message, this field contains the original, full log message. It can have already some modifications applied like encoding or new lines removed to clean up the log message.<br/>This field is not indexed and doc_values are disabled so it can't be queried but the value can be retrieved from `_source`.  | keyword  |   | `Sep 19 08:26:10 localhost My log`  |
 
 
@@ -347,7 +327,7 @@ These fields contain information about a process. These fields can help you corr
 | <a name="process.name"></a>process.name  | Process name.<br/>Sometimes called program name or similar.  | keyword  |   | `ssh`  |
 | <a name="process.pid"></a>process.pid  | Process id.  | long  |   |   |
 | <a name="process.ppid"></a>process.ppid  | Process parent id.  | long  |   |   |
-| <a name="process.title"></a>process.title  | Process title.<br/>The proctitle, often the same as process name.  | keyword  |   |   |
+| <a name="process.title"></a>process.title  | Process title.<br/>The proctitle, some times the same as process name. Can also be different: for example a browser setting its title to the web page currently opened.  | keyword  |   |   |
 
 
 ## <a name="service"></a> Service fields
@@ -378,22 +358,6 @@ Source fields describe details about the source of the event.
 | <a name="source.mac"></a>source.mac  | MAC address of the source.  | keyword  |   |   |
 | <a name="source.domain"></a>source.domain  | Source domain.  | keyword  |   |   |
 | <a name="source.subdomain"></a>source.subdomain  | Source subdomain.  | keyword  |   |   |
-
-
-## <a name="tls"></a> TLS fields
-
-The tls fields contain the TLS related data about a specific connection.
-
-
-| Field  | Description  | Type  | Multi Field  | Example  |
-|---|---|---|---|---|
-| <a name="tls.version"></a>tls.version  | TLS version.  | keyword  |   | `TLSv1.2`  |
-| <a name="tls.certificates"></a>tls.certificates  | An array of certificates.  | keyword  |   |   |
-| <a name="tls.servername"></a>tls.servername  | Server name requested by the client.  | keyword  |   | `localhost`  |
-| <a name="tls.ciphersuite"></a>tls.ciphersuite  | Name of the cipher used for the communication.  | keyword  |   | `ECDHE-ECDSA-AES-128-CBC-SHA`  |
-
-
-As an example in the case of Filebeat and the TCP input, the `version` field would be the version of the TLS protocol in use, the `certificates` would be the chain of certificates provided by the client and the `ciphersuite` is the encryption algorithm used for the communication.
 
 
 ## <a name="url"></a> URL fields
@@ -465,8 +429,10 @@ Contributions of additional uses cases on top of ECS are welcome.
  * [Auditbeat](https://github.com/elastic/ecs/blob/master/use-cases/auditbeat.md)
  * [Beats](https://github.com/elastic/ecs/blob/master/use-cases/beats.md)
  * [Filebeat Apache](https://github.com/elastic/ecs/blob/master/use-cases/filebeat-apache-access.md)
+ * [Kubernetes](https://github.com/elastic/ecs/blob/master/use-cases/kubernetes.md)
  * [Logging](https://github.com/elastic/ecs/blob/master/use-cases/logging.md)
  * [Metricbeat](https://github.com/elastic/ecs/blob/master/use-cases/metricbeat.md)
+ * [TLS](https://github.com/elastic/ecs/blob/master/use-cases/tls.md)
 
 
 

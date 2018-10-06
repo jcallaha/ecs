@@ -161,17 +161,6 @@
               "ignore_above": 1024,
               "type": "keyword"
             },
-            "timezone": {
-              "properties": {
-                "offset": {
-                  "properties": {
-                    "sec": {
-                      "type": "long"
-                    }
-                  }
-                }
-              }
-            },
             "type": {
               "ignore_above": 1024,
               "type": "keyword"
@@ -392,17 +381,6 @@
                 }
               }
             },
-            "timezone": {
-              "properties": {
-                "offset": {
-                  "properties": {
-                    "sec": {
-                      "type": "long"
-                    }
-                  }
-                }
-              }
-            },
             "type": {
               "ignore_above": 1024,
               "type": "keyword"
@@ -436,36 +414,6 @@
             }
           }
         },
-        "kubernetes": {
-          "properties": {
-            "annotations": {
-              "type": "object"
-            },
-            "container": {
-              "properties": {
-                "name": {
-                  "ignore_above": 1024,
-                  "type": "keyword"
-                }
-              }
-            },
-            "labels": {
-              "type": "object"
-            },
-            "namespace": {
-              "ignore_above": 1024,
-              "type": "keyword"
-            },
-            "pod": {
-              "properties": {
-                "name": {
-                  "ignore_above": 1024,
-                  "type": "keyword"
-                }
-              }
-            }
-          }
-        },
         "labels": {
           "type": "object"
         },
@@ -474,12 +422,6 @@
             "level": {
               "ignore_above": 1024,
               "type": "keyword"
-            },
-            "line": {
-              "type": "long"
-            },
-            "offset": {
-              "type": "long"
             },
             "original": {
               "doc_values": false,
@@ -663,26 +605,6 @@
         "tags": {
           "ignore_above": 1024,
           "type": "keyword"
-        },
-        "tls": {
-          "properties": {
-            "certificates": {
-              "doc_values": false,
-              "type": "keyword"
-            },
-            "ciphersuite": {
-              "ignore_above": 1024,
-              "type": "keyword"
-            },
-            "servername": {
-              "ignore_above": 1024,
-              "type": "keyword"
-            },
-            "version": {
-              "ignore_above": 1024,
-              "type": "keyword"
-            }
-          }
         },
         "url": {
           "properties": {
